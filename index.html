@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>TYPE RACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN · LANDING  (create or join)
+════════════════════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="noise"></div>
+  <div class="grid-lines"></div>
+
+  <div class="landing-wrap">
+    <div class="logo-block">
+      <div class="logo-eyebrow">MULTIPLAYER</div>
+      <div class="logo-main">TYPE<br>RACE</div>
+      <div class="logo-version">V2.0</div>
+    </div>
+
+    <!-- nickname -->
+    <div class="card" id="card-nick">
+      <div class="card-label">YOUR HANDLE</div>
+      <input id="nick-input" type="text" maxlength="20" placeholder="nickname…" autocomplete="off" spellcheck="false"/>
+      <div id="nick-error" class="error-line"></div>
+    </div>
+
+    <!-- create / join -->
+    <div class="two-col">
+      <div class="card action-card" id="card-create">
+        <div class="card-label">NEW ROOM</div>
+        <p class="card-desc">Create a private room and invite friends with a code.</p>
+        <button id="btn-create" class="btn-accent">CREATE ROOM</button>
+      </div>
+      <div class="card action-card" id="card-join">
+        <div class="card-label">JOIN ROOM</div>
+        <input id="room-code-input" type="text" maxlength="5" placeholder="XXXXX" autocomplete="off" spellcheck="false" style="text-transform:uppercase;text-align:center;font-size:1.4rem;letter-spacing:0.25em"/>
+        <button id="btn-join" class="btn-secondary">JOIN</button>
+      </div>
+    </div>
+
+    <!-- profile strip -->
+    <div id="profile-strip" class="profile-strip card hidden">
+      <div class="card-label">YOUR STATS</div>
+      <div id="profile-stats" class="p-stats"></div>
+      <div id="achievement-row" class="ach-row"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN · LOBBY
+════════════════════════════════════════════════════════════ -->
+<div id="screen-lobby" class="screen">
+  <div class="noise"></div>
+
+  <div class="lobby-layout">
+    <!-- left: players + chat -->
+    <div class="lobby-left">
+      <div class="room-badge">
+        ROOM&nbsp;<span id="lob-code" class="room-code-val">–</span>
+        <button class="btn-copy" id="btn-copy-code" title="Copy invite link">⎘</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">RACERS <span id="lob-count" class="dim">(0)</span></div>
+        <ul id="lob-player-list" class="player-list"></ul>
+      </div>
+
+      <!-- Chat -->
+      <div class="card chat-card">
+        <div class="card-label">CHAT</div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input-row">
+          <input id="chat-input" type="text" maxlength="200" placeholder="say something…" autocomplete="off" spellcheck="false"/>
+          <button id="btn-chat-send" class="btn-secondary btn-sm">SEND</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: settings + countdown -->
+    <div class="lobby-right">
+      <div class="lob-title">TYPE RACE</div>
+
+      <!-- Host settings (only shown to host) -->
+      <div id="host-settings" class="card hidden">
+        <div class="card-label">⚙ HOST SETTINGS</div>
+
+        <div class="setting-row">
+          <label>ROUNDS</label>
+          <div class="seg-ctrl" id="seg-rounds">
+            <button class="seg active" data-val="3">3</button>
+            <button class="seg" data-val="5">5</button>
+            <button class="seg" data-val="7">7</button>
+            <button class="seg" data-val="10">10</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>DIFFICULTY</label>
+          <div class="seg-ctrl" id="seg-diff">
+            <button class="seg" data-val="easy">EASY</button>
+            <button class="seg active" data-val="medium">MED</button>
+            <button class="seg" data-val="hard">HARD</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>MODE</label>
+          <div class="seg-ctrl" id="seg-mode">
+            <button class="seg active" data-val="standard">STD</button>
+            <button class="seg" data-val="timed">TIMED</button>
+            <button class="seg" data-val="sudden_death">SUDDEN</button>
+            <button class="seg" data-val="teams">TEAMS</button>
+          </div>
+        </div>
+
+        <div class="setting-row" id="row-timed-dur" style="display:none">
+          <label>SECONDS</label>
+          <div class="seg-ctrl" id="seg-timed">
+            <button class="seg" data-val="30">30</button>
+            <button class="seg active" data-val="60">60</button>
+            <button class="seg" data-val="90">90</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>PHRASES</label>
+          <div class="seg-ctrl" id="seg-pack">
+            <button class="seg active" data-val="classic">CLASSIC</button>
+            <button class="seg" data-val="animals">ANIMALS</button>
+            <button class="seg" data-val="science">SCIENCE</button>
+            <button class="seg" data-val="movies">MOVIES</button>
+          </div>
+        </div>
+
+        <button id="btn-force-start" class="btn-accent mt-sm">▶ START NOW</button>
+      </div>
+
+      <!-- Non-host settings view -->
+      <div id="guest-settings" class="card hidden">
+        <div class="card-label">GAME SETTINGS</div>
+        <div id="guest-settings-display" class="settings-display"></div>
+        <div class="dim-sm">Waiting for host to start…</div>
+      </div>
+
+      <!-- Countdown -->
+      <div id="lob-countdown" class="card countdown-card hidden">
+        <div class="card-label">RACE STARTS IN</div>
+        <div id="lob-countdown-num" class="big-num">–</div>
+      </div>
+
+      <div id="lob-waiting" class="wait-note hidden">
+        Waiting for more players…
+      </div>
+
+      <!-- Mode explanation -->
+      <div id="mode-explain" class="card mode-card hidden">
+        <div id="mode-explain-text"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN · GAME
+════════════════════════════════════════════════════════════ -->
+<div id="screen-game" class="screen">
+
+  <div class="game-topbar">
+    <div class="gtb-left">
+      <span class="round-tag">ROUND <span id="g-round">1</span>/<span id="g-total">5</span></span>
+      <span id="mode-tag" class="mode-tag">STANDARD</span>
+    </div>
+    <div class="gtb-center logo-sm">TYPE RACE</div>
+    <div class="gtb-right">
+      <span id="g-timer-label" class="timer-tag">⏱ <span id="g-timer">0</span>s</span>
+    </div>
+  </div>
+
+  <!-- Team scores bar (teams mode only) -->
+  <div id="teams-bar" class="teams-bar hidden">
+    <div class="team-score red-team">🔴 RED <span id="team-red-score">0</span></div>
+    <div class="team-score blue-team">🔵 BLUE <span id="team-blue-score">0</span></div>
+  </div>
+
+  <!-- Progress bars -->
+  <div id="g-progress" class="g-progress-wrap"></div>
+
+  <!-- Break overlay -->
+  <div id="break-overlay" class="break-overlay hidden">
+    <div class="break-inner">
+      <div class="break-heading">⚡ ROUND OVER</div>
+      <div class="break-next-label">NEXT ROUND IN</div>
+      <div id="break-num" class="break-big-num">20</div>
+      <div id="break-lb"></div>
+    </div>
+  </div>
+
+  <div class="game-body">
+    <!-- Main typing column -->
+    <div class="game-col-main">
+      <div id="phrase-display" class="phrase-box"></div>
+      <div class="live-stats-row">
+        <span id="wpm-display" class="live-wpm">0 WPM</span>
+        <span id="acc-display" class="live-acc">100%</span>
+        <span id="char-display" class="live-chars">0/0</span>
+      </div>
+      <textarea id="typing-input"
+        spellcheck="false"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        placeholder="⬆ Type the phrase above…"
+        disabled></textarea>
+      <div id="sudden-death-msg" class="sd-msg hidden">💀 SUDDEN DEATH — fix every mistake before moving on</div>
+    </div>
+
+    <!-- Side panel -->
+    <div class="game-col-side">
+      <div class="side-head">STANDINGS</div>
+      <div id="g-leaderboard"></div>
+
+      <!-- Chat side panel -->
+      <div class="side-head mt-md">CHAT</div>
+      <div id="g-chat-messages" class="chat-messages-side"></div>
+      <div class="chat-input-row">
+        <input id="g-chat-input" type="text" maxlength="200" placeholder="chat…" autocomplete="off" spellcheck="false"/>
+        <button id="g-btn-chat-send" class="btn-secondary btn-sm">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCREEN · GAME OVER
+════════════════════════════════════════════════════════════ -->
+<div id="screen-gameover" class="screen">
+  <div class="noise"></div>
+  <div class="go-radial"></div>
+
+  <div class="go-wrap">
+    <div class="go-heading">RACE<br>OVER</div>
+    <div id="go-team-result" class="go-team-result hidden"></div>
+    <div id="go-final-lb" class="go-lb"></div>
+
+    <!-- New achievements unlocked -->
+    <div id="go-achievements" class="go-ach hidden">
+      <div class="card-label">🏅 ACHIEVEMENTS UNLOCKED</div>
+      <div id="go-ach-list" class="go-ach-list"></div>
+    </div>
+
+    <!-- Rematch -->
+    <div class="go-actions">
+      <button id="btn-rematch" class="btn-accent">VOTE REMATCH</button>
+      <button id="btn-new-room" class="btn-secondary">NEW ROOM</button>
+    </div>
+    <div id="rematch-status" class="rematch-status"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     CANVAS: Confetti
+════════════════════════════════════════════════════════════ -->
+<canvas id="confetti-canvas"></canvas>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="profile.js"></script>
+<script src="confetti.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
