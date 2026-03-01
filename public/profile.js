@@ -3,7 +3,7 @@
 ══════════════════════════════════════════════════════════════ */
 
 const ACHIEVEMENTS = [
-  { id:'speed_demon',    label:'⚡ Speed Demon',    desc:'Achieve 80+ WPM in a round',           check: s => s.maxWpm >= 80    },
+  { id:'speed_demon',    label:'⚡ Speed Demon',     desc:'Achieve 80+ WPM in a round',            check: s => s.maxWpm >= 80    },
   { id:'perfectionist',  label:'🎯 Perfectionist',  desc:'Finish a round with 100% accuracy',     check: s => s.perfect >= 1    },
   { id:'podium',         label:'🏆 Podium',         desc:'Finish in the top 3',                   check: s => s.podiums >= 1    },
   { id:'champion',       label:'👑 Champion',       desc:'Win a race',                            check: s => s.wins >= 1       },

@@ -21,7 +21,7 @@ app.get('/{*path}', (req, res) => {
 const DEFAULTS = {
   MIN_PLAYERS:        2,
   TOTAL_ROUNDS:       5,
-  PRE_GAME_COUNTDOWN: 15,
+  PRE_GAME_COUNTDOWN: 60,
   BREAK_DURATION:     20,
   ROUND_TIMEOUT:      90,
   TIMED_DURATION:     60,   // seconds for timed mode
