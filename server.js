@@ -10,11 +10,11 @@ const app    = express();
 const server = http.createServer(app);
 const io     = new Server(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // Catch-all: serve index for any unknown path (room code URLs)
 app.get('/{*path}', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ─── Constants ────────────────────────────────────────────────────────────────
